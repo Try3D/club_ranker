@@ -11,6 +11,8 @@ function App() {
   const [clubs, setClubs] = useState<[string, string] | null>(null);
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState({});
+  const [selectedSide, setSelectedSide] = useState<number | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const [pair, setPair] = useState<[string, string] | null>(null);
 
@@ -51,6 +53,11 @@ function App() {
   }
 
   async function handleClick(i: number) {
+    if (clicked || isAnimating) return;
+
+    setSelectedSide(i);
+    setIsAnimating(true);
+
     const j = i === 1 ? 0 : 1;
     await fetch(`http://localhost:8000/result/${pair[i]}/${pair[j]}`, {
       method: "POST",
@@ -61,30 +68,53 @@ function App() {
         setData({ ...res, winningIdx: i });
       });
 
-    setClicked(true);
+    setTimeout(() => {
+      setIsAnimating(false);
+      setClicked(true);
+    }, 300);
   }
 
   function handleNext() {
     setClicked(false);
+    setSelectedSide(null);
     setClubPair();
   }
 
   return (
     <>
       <h1>Which club do you prefer?</h1>
-      <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "10px",
+          position: "relative",
+          transition: "all 0.3s ease-out",
+        }}
+      >
         <button
           style={{
             fontSize: "50px",
             color: "white",
             borderRadius: "20px",
             backgroundColor: clicked
-              ? "rgb(255, 27, 63, 0.5)"
-              : "rgb(255, 27, 63)",
+              ? selectedSide === 1
+                ? "rgb(255, 27, 63, 0.5)"
+                : "rgb(255, 27, 63, 1)"
+              : selectedSide === 0
+                ? "rgb(255, 27, 63, 1)"
+                : "rgb(255, 27, 63, 0.8)",
             height: "80vh",
-            width: "50vw",
+            width:
+              clicked && data.winningIdx === 0
+                ? `${data.new_winner_probability * 100}vw`
+                : clicked && data.winningIdx === 1
+                  ? `${(1 - data.new_loser_probability) * 100}vw`
+                  : "50vw",
             textAlign: "center",
             verticalAlign: "middle",
+            transition: "all 0.3s ease-out",
+            filter: selectedSide === 0 ? "brightness(1.3)" : "brightness(1)",
           }}
           onClick={() => {
             handleClick(0);
@@ -118,12 +148,23 @@ function App() {
             color: "white",
             borderRadius: "20px",
             backgroundColor: clicked
-              ? "rgb(0, 114, 255, 0.5)"
-              : "rgb(0, 114, 255)",
+              ? selectedSide === 0
+                ? "rgb(0, 114, 255, 0.5)"
+                : "rgb(0, 114, 255, 1)"
+              : selectedSide === 1
+                ? "rgb(0, 114, 255, 1)"
+                : "rgb(0, 114, 255, 0.8)",
             height: "80vh",
-            width: "50vw",
+            width:
+              clicked && data.winningIdx === 1
+                ? `${data.new_winner_probability * 100}vw`
+                : clicked && data.winningIdx === 0
+                  ? `${data.new_loser_probability * 100}vw`
+                  : "50vw",
             textAlign: "center",
             verticalAlign: "middle",
+            transition: "all 0.3s ease-out",
+            filter: selectedSide === 1 ? "brightness(1.3)" : "brightness(1)",
           }}
           onClick={() => {
             handleClick(1);
