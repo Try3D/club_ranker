@@ -1,0 +1,15 @@
+CLUBS = [
+    "ameya",
+    "business",
+    "checkmate",
+    "coding",
+    "cognition",
+    "english_literary",
+    "gdg",
+    "isai",
+    "law",
+    "mun",
+    "potential",
+    "rhythm",
+    "spectre",
+]
