@@ -1,6 +1,6 @@
 from google import genai
 
-client = genai.Client(api_key="AIzaSyC8sp-59dafc4wr7v3xUFMH1Sc04QhPopk")
+client = genai.Client(api_key="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 from clubs import CHAT_LOGS, CLUBS
 
