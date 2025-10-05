@@ -193,9 +193,40 @@ function App() {
 
       <button
         onClick={handleNext}
-        style={{ position: "absolute", bottom: "100px", right: "100px" }}
+        style={{
+          position: "absolute",
+          bottom: "100px",
+          right: "100px",
+          backgroundColor: "#4CAF50",
+          color: "white",
+          border: "none",
+          borderRadius: "12px",
+          padding: "16px 32px",
+          fontSize: "18px",
+          fontWeight: "600",
+          cursor: "pointer",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+          transition: "all 0.2s ease",
+          minWidth: "120px",
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = "#45a049";
+          e.target.style.transform = "translateY(-2px)";
+          e.target.style.boxShadow = "0 6px 16px rgba(0, 0, 0, 0.2)";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = "#4CAF50";
+          e.target.style.transform = "translateY(0px)";
+          e.target.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)";
+        }}
+        onMouseDown={(e) => {
+          e.target.style.transform = "translateY(0px)";
+        }}
+        onMouseUp={(e) => {
+          e.target.style.transform = "translateY(-2px)";
+        }}
       >
-        Next
+        Next →
       </button>
     </>
   );
